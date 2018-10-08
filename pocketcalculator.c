@@ -1,85 +1,115 @@
+/*----------------------------------------------------------
+ *				HTBLA-Leonding / Class: 2AHIF
+ * ---------------------------------------------------------
+ * Exercise Number: 02
+ * Title:			pocketcalculator
+ * Author:		Moritz Polleichtner
+ * ----------------------------------------------------------
+ * Description:
+ * you can choose between 4 different Calculator function. 
+ * ----------------------------------------------------------
+ */
 #include <stdio.h>
-int main(int argc, char const *argv[])
-{
-   int choice = printMenu();
-   executeOption(choice);
-   double firstNumber;
-   double secondnumber;
-   getOperants(&firstNumber, &secondNumber)
-   add(firstNumber, secondNumber);
-   subtract(firstNumber, secondNumber);
-   multiply(firstNumber, secondNumber);
-   divide(firstNumber, secondNumber);
+#include <float.h>
 
 
 
-  return 0;
-}
-
-int printMenu()
+int PrintMenu()
 {
   int choice;
-  printf("Add (1), Subtract (2), Multiply (3), Divide (4), Stop program(-1) ");
-  printf("Enter your choice; \n");
-  scanf("%d\n", &choice);
+  do {
+    printf("Add (1), Subtract (2), Multiply (3), Divide (4), Stop program(-1) Enter your choice: ");
+    scanf("%d", &choice);
+  } while(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != -1);
+
+  return choice;
 }
-void executeOption(int choice)
+void ExecuteOption(int choice)
 {
   switch (choice) {
     case 1:
-      add();
+      Add(firstNumber, secondNumber);
       break;
     case 2:
-      subtract();
+      Subtract(firstNumber, secondNumber);
       break;
     case 3:
-      multiply();
+     Multiply(firstNumber, secondNumber);
       break;
     case 4:
-      Divide();
+      Divide(firstNumber, secondNumber);
       break;
       case -1:
       break;
       default:
-        printf("inavlid input\n");
-        displayMenu();
+        printf("inavlid input, please try again\n");
+        PrintMenu();
         break;
   }
+}
 
-  void getOperants(double &firstNumber, double &secondNumber)
+  void GetOperants(double* firstNumber, double* secondNumber)
 {
-    printf("First operand: \n");
-    scanf("%lf\n", &firstNumber);
-    printf("Second operand: \n");
-    scanf("%lf\n", &secondNumber);
+    printf("First operand: ");
+    scanf("%lf", firstNumber);
+
+    printf("Second operand: ");
+    scanf("%lf", secondNumber);
   }
 
-  void add(double firstNum, double secondNum)
+  void Add(double firstNum, double secondNum)
   {
       int result =  firstNum + secondNum;
-      printResult(result);
+      PrintResult(result);
 
   }
-  int subtract(double firstNum, double secondNum)
+  void Subtract(double firstNum, double secondNum)
   {
       int result = firstNum - secondNum;
-      printResult(result);
+      PrintResult(result);
   }
 
-  int multiply(double firstNum, double secondNum) {
+  void Multiply(double firstNum, double secondNum) {
     int result =  firstNum * secondNum;
-    printResult(result);
+    PrintResult(result);
   }
 
-  int divide(double firstNum, double secondNum)
+  void Divide(double firstNum, double secondNum)
   {
-    int result =  firstNum / secondNum;
-    printResult(result);
+    int result;
+    if (secondNum == 0) {
+      GetOperants(&firstNum, &secondNum);
+    }
+    else{
+      result =  firstNum / secondNum;
+      PrintResult(result);
+    }
   }
 
-  void printResult(double result)
+  void PrintResult(double result)
   {
-      printf("result: ", result);
+    if(result < DBL_MIN) {
+       printf("Number overflow\n");
+    }
+
+    else if(result > DBL_MAX){
+      printf("Number underflow\n");
+  }
+  else{
+    printf("Ergebniss : %lf", result);
   }
 
-}
+ }
+ int main(int argc, char const *argv[])
+ {
+
+    double* firstNumber;
+    double* secondNumber;
+    int choice;
+
+    choice = PrintMenu();
+    GetOperants(&firstNumber, &secondNumber);
+    ExecuteOption(choice);
+
+   return 0;
+ }
